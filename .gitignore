@@ -1,0 +1,6 @@
+packages
+bin
+obj
+*.user
+sqlite3.dll
+/*.suo
