@@ -20,6 +20,7 @@ namespace AzureMobileServicesOfflineTests
             protected override void TestInitialize()
             {
                 this.table = this.Context.client.GetSyncTable<Mongo>();
+                this.table.SupportedOptions &= ~(MobileServiceRemoteTableOptions.Skip | MobileServiceRemoteTableOptions.Top);
             }
 
             [Fact]
@@ -60,10 +61,10 @@ namespace AzureMobileServicesOfflineTests
             }
 
             [Fact]
-            public async Task PullAsync_Incremental_Throws()
+            public void PullAsync_Incremental_Throws()
             {
                 var ex = AssertEx.TaskThrows<MobileServiceInvalidOperationException>(() => this.table.PullAsync("items", this.table.CreateQuery()));
-                Assert.Equal(ex.Request.RequestUri.ToString(), "http://localhost:31475/tables/Person?$filter=(__updatedAt ge datetimeoffset'0001-01-01T00:00:00.0000000%2B00:00')&$orderby=__updatedAt&$top=50&__includeDeleted=true&__systemproperties=__createdAt%2C__updatedAt%2C__version");
+                Assert.Equal("http://localhost:31475/tables/Mongo?$filter=(__updatedAt ge datetimeoffset'0001-01-01T00:00:00.0000000%2B00:00')&$orderby=__updatedAt&__includeDeleted=true&__systemproperties=__createdAt%2C__updatedAt%2C__version", ex.Request.RequestUri.ToString());
             }
         }
 
@@ -73,6 +74,7 @@ namespace AzureMobileServicesOfflineTests
             protected override void TestInitialize()
             {
                 this.table = this.Context.client.GetSyncTable<Storage>();
+                this.table.SupportedOptions &= ~(MobileServiceRemoteTableOptions.OrderBy | MobileServiceRemoteTableOptions.Skip);
             }
 
             [Fact]
@@ -116,10 +118,10 @@ namespace AzureMobileServicesOfflineTests
             }
 
             [Fact]
-            public async Task PullAsync_Incremental_Throws()
+            public void PullAsync_Incremental_Throws()
             {
                 var ex = AssertEx.TaskThrows<MobileServiceInvalidOperationException>(() => this.table.PullAsync("items", this.table.CreateQuery()));
-                Assert.Equal(ex.Request.RequestUri.ToString(), "http://localhost:31475/tables/Person?$filter=(__updatedAt ge datetimeoffset'0001-01-01T00:00:00.0000000%2B00:00')&$orderby=__updatedAt&$top=50&__includeDeleted=true&__systemproperties=__createdAt%2C__updatedAt%2C__version");
+                Assert.Equal(ex.Request.RequestUri.ToString(), "http://localhost:31475/tables/Person?$filter=(__updatedAt ge datetimeoffset'0001-01-01T00:00:00.0000000%2B00:00')&$top=50&__includeDeleted=true&__systemproperties=__createdAt%2C__updatedAt%2C__version");
             }
         }
 
