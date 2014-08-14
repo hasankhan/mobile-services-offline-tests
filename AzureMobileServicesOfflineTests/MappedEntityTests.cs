@@ -11,7 +11,7 @@ namespace AzureMobileServicesOfflineTests
         private IMobileServiceSyncTable<MappedEntity> table;
         protected override void TestInitialize()
         {
-            this.table = this.Context.client.GetSyncTable<MappedEntity>();
+            this.table = this.Context.Client.GetSyncTable<MappedEntity>();
         }
 
         [Fact]
@@ -21,7 +21,7 @@ namespace AzureMobileServicesOfflineTests
             {
                 var original = NewItem();
                 // insert an item
-                await this.Context.client.GetTable<MappedEntity>().InsertAsync(original);
+                await this.Context.Client.GetTable<MappedEntity>().InsertAsync(original);
                 // download the changes
                 await this.table.PullAsync();
                 // verify the item was also downloaded
@@ -39,7 +39,7 @@ namespace AzureMobileServicesOfflineTests
         {
             var first = NewItem();
             // insert an item
-            await this.Context.client.GetTable<MappedEntity>().InsertAsync(first);
+            await this.Context.Client.GetTable<MappedEntity>().InsertAsync(first);
             // download the changes
             await this.table.PullAsync("items", this.table.CreateQuery());
             // verify the item was also downloaded

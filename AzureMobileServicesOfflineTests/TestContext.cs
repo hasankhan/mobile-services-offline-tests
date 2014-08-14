@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using AzureMobileServicesOfflineTests.Types;
 using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
@@ -8,23 +7,29 @@ namespace AzureMobileServicesOfflineTests
 {
     public class TestContext : IDisposable
     {
-        public MobileServiceClient client { get; set; }
+        public MobileServiceClient Client { get; private set; }
 
-        public TestContext()
+        public void Initialize(string uri)
         {
-            this.client = new MobileServiceClient("http://localhost:31475/");
-            File.Delete("test.db");
-            var store = new MobileServiceSQLiteStore("test.db");
+            string db = Guid.NewGuid().ToString("N");
+
+            var store = new MobileServiceSQLiteStore(db);
             store.DefineTable<Storage>();
             store.DefineTable<Mongo>();
             store.DefineTable<Entity>();
             store.DefineTable<MappedEntity>();
-            this.client.SyncContext.InitializeAsync(store).Wait();
+            store.DefineTable<Node>();
+
+            this.Client = new MobileServiceClient(uri);
+            this.Client.SyncContext.InitializeAsync(store).Wait();
         }
 
         public void Dispose()
         {
-            this.client.Dispose();
+            if (this.Client != null)
+            {
+                this.Client.Dispose();
+            }
         }
     }
 }

@@ -14,7 +14,7 @@ namespace AzureMobileServicesOfflineTests
         private IMobileServiceSyncTable<Mongo> table;
         protected override void TestInitialize()
         {
-            this.table = this.Context.client.GetSyncTable<Mongo>();
+            this.table = this.Context.Client.GetSyncTable<Mongo>();
             this.table.SupportedOptions &= ~(MobileServiceRemoteTableOptions.Skip | MobileServiceRemoteTableOptions.Top);
         }
 
@@ -25,7 +25,7 @@ namespace AzureMobileServicesOfflineTests
             {
                 var original = NewItem();
                 // insert an item
-                await this.Context.client.GetTable<Mongo>().InsertAsync(original);
+                await this.Context.Client.GetTable<Mongo>().InsertAsync(original);
                 // download the changes by comparing the id because in mongo if the item
                 // is added at the end then we're not going to iterate over pages
                 // since skip and top are broken

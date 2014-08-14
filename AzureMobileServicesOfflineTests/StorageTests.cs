@@ -13,7 +13,7 @@ namespace AzureMobileServicesOfflineTests
         private IMobileServiceSyncTable<Storage> table;
         protected override void TestInitialize()
         {
-            this.table = this.Context.client.GetSyncTable<Storage>();
+            this.table = this.Context.Client.GetSyncTable<Storage>();
             this.table.SupportedOptions &= ~(MobileServiceRemoteTableOptions.OrderBy | MobileServiceRemoteTableOptions.Skip);
         }
 
@@ -26,7 +26,7 @@ namespace AzureMobileServicesOfflineTests
                 // insert an item
                 await this.table.InsertAsync(original);
                 // push it 
-                await this.Context.client.SyncContext.PushAsync();
+                await this.Context.Client.SyncContext.PushAsync();
                 // clear the table
                 await this.table.PurgeAsync();
                 // download the changes

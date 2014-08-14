@@ -74,6 +74,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NodeTests.cs" />
     <Compile Include="EntityTests.cs" />
     <Compile Include="MappedEntityTests.cs" />
     <Compile Include="MongoTests.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Types\MappedEntity.cs" />
     <Compile Include="Types\Mongo.cs" />
     <Compile Include="Types\Entity.cs" />
+    <Compile Include="Types\Node.cs" />
     <Compile Include="Types\Storage.cs" />
   </ItemGroup>
   <ItemGroup>
