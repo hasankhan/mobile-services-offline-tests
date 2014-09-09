@@ -48,7 +48,7 @@ namespace AzureMobileServicesOfflineTests
         {
             var ex = AssertEx.TaskThrows<MobileServiceInvalidOperationException>(() => this.table.PullAsync("items", this.table.CreateQuery()));
             Assert.Contains("Exception has been thrown by the target of an invocation.", ex.Response.Content.ReadAsStringAsync().Result);
-            Assert.Equal("http://localhost:31475/tables/Mongo?$filter=(__updatedAt ge datetimeoffset'0001-01-01T00:00:00.0000000%2B00:00')&$orderby=__updatedAt&__includeDeleted=true&__systemproperties=__createdAt%2C__updatedAt%2C__version", ex.Request.RequestUri.ToString());
+            Assert.Equal("http://localhost:31475/tables/Mongo?$filter=(__updatedAt ge datetimeoffset'1970-01-01T00:00:00.0000000%2B00:00')&$orderby=__updatedAt&__includeDeleted=true&__systemproperties=__createdAt%2C__updatedAt%2C__version", ex.Request.RequestUri.ToString());
         }
 
         private static Mongo NewItem()

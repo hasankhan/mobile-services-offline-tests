@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using AssertExLib;
 using AzureMobileServicesOfflineTests.Types;
 using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.Sync;
@@ -42,11 +41,36 @@ namespace AzureMobileServicesOfflineTests
         }
 
         [Fact]
-        public void Storage_PullAsync_Incremental_Throws()
+        public async Task Storage_PullAsync_Incremental__DownloadsTheItems()
         {
-            var ex = AssertEx.TaskThrows<MobileServiceInvalidOperationException>(() => this.table.PullAsync("items", this.table.CreateQuery()));
-            Assert.Contains("Could not find a property named '__updatedAt' on type 'Local.Models.Person", ex.Response.Content.ReadAsStringAsync().Result);
-            Assert.Equal(ex.Request.RequestUri.ToString(), "http://localhost:31475/tables/Person?$filter=(__updatedAt ge datetimeoffset'0001-01-01T00:00:00.0000000%2B00:00')&$top=50&__includeDeleted=true&__systemproperties=__createdAt%2C__updatedAt%2C__version");
+            var first = NewItem();
+            // insert an item
+            await this.table.InsertAsync(first);
+            // push it 
+            await this.Context.Client.SyncContext.PushAsync();
+            // clear the table
+            await this.table.PurgeAsync();
+            // download the changes
+            await this.table.PullAsync("items", this.table.CreateQuery());
+
+            // verify the item was also downloaded
+            Storage downloaded = await this.table.LookupAsync(first.Id);
+            // the item should be there
+            Assert.NotNull(downloaded);
+            Assert.Equal(first.FirstName, downloaded.FirstName);
+            Assert.Equal(first.LastName, downloaded.LastName);
+
+            var second = NewItem();
+            await this.Context.Client.GetTable<Storage>().InsertAsync(second);
+            // download the changes
+            await this.table.PullAsync("items", this.table.CreateQuery());
+
+            // verify the item was also downloaded
+            downloaded = await this.table.LookupAsync(second.Id);
+            // the item should be there
+            Assert.NotNull(downloaded);
+            Assert.Equal(second.FirstName, downloaded.FirstName);
+            Assert.Equal(second.LastName, downloaded.LastName);
         }
 
         private static Storage NewItem()
