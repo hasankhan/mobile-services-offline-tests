@@ -11,9 +11,11 @@ namespace AzureMobileServicesOfflineTests
 
         public void Initialize(string uri)
         {
+            System.Diagnostics.Debug.Listeners.Add(new System.Diagnostics.DefaultTraceListener());
+
             string db = Guid.NewGuid().ToString("N");
 
-            var store = new MobileServiceSQLiteStore(db);
+            var store = new LoggingLocalStore(db);
             store.DefineTable<Storage>();
             store.DefineTable<Mongo>();
             store.DefineTable<Entity>();
