@@ -9,7 +9,7 @@ namespace AzureMobileServicesOfflineTests
     {
         public MobileServiceClient Client { get; private set; }
 
-        public void Initialize(string uri)
+        public void Initialize(string uri, string appKey)
         {
             System.Diagnostics.Debug.Listeners.Add(new System.Diagnostics.DefaultTraceListener());
 
@@ -22,7 +22,7 @@ namespace AzureMobileServicesOfflineTests
             store.DefineTable<MappedEntity>();
             store.DefineTable<Node>();
 
-            this.Client = new MobileServiceClient(uri);
+            this.Client = new MobileServiceClient(uri, appKey);
             this.Client.SyncContext.InitializeAsync(store).Wait();
         }
 

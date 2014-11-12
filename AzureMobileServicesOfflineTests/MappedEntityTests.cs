@@ -23,7 +23,7 @@ namespace AzureMobileServicesOfflineTests
                 // insert an item
                 await this.Context.Client.GetTable<MappedEntity>().InsertAsync(original);
                 // download the changes
-                await this.table.PullAsync();
+                await this.table.PullAsync(null, null);
                 // verify the item was also downloaded
                 MappedEntity downloaded = await this.table.LookupAsync(original.Id);
                 // the item should be there

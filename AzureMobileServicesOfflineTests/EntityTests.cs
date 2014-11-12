@@ -28,7 +28,7 @@ namespace AzureMobileServicesOfflineTests
                 // clear the table
                 await this.table.PurgeAsync();
                 // download the changes
-                await this.table.PullAsync();
+                await this.table.PullAsync(null, null);
                 // verify the item was also downloaded
                 Entity downloaded = await this.table.LookupAsync(original.Id);
                 // the item should be there

@@ -8,7 +8,7 @@ namespace AzureMobileServicesOfflineTests
         public void SetFixture(TestContext context)
         {
             this.Context = context;
-            this.Context.Initialize(this.Uri);
+            this.Context.Initialize(this.Uri, this.AppKey);
             TestInitialize();
         }
 
@@ -19,6 +19,11 @@ namespace AzureMobileServicesOfflineTests
         protected virtual string Uri
         {
             get { return "http://localhost:31475/"; }
+        }
+
+        protected virtual string AppKey
+        {
+            get { return "jyshuthgjnVFGTRSDskfjjhuydgFde99"; }
         }
     }
 }
