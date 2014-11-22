@@ -29,7 +29,7 @@ namespace AzureMobileServicesOfflineTests
                 // download the changes by comparing the id because in mongo if the item
                 // is added at the end then we're not going to iterate over pages
                 // since skip and top are broken
-                await this.table.PullAsync(this.table.Where(m => m.Id == original.Id));
+                await this.table.PullAsync(null, this.table.Where(m => m.Id == original.Id));
                 // verify the item was also downloaded
                 Mongo downloaded = (await this.table.Where(x => x.Name == original.Name).ToListAsync()).FirstOrDefault();
                 // the item should be there
